@@ -1,13 +1,8 @@
-# Expo Router Example
+# FERRAMENTAS UTILIZADAS
+[`REACT NATIVE`](https://reactnative.dev/) - Framework para mobile utilizado
+[`NODEJS`](https://nodejs.org/pt) - Ambiente de execução de JavaScript
+[`VSCODE`](https://code.visualstudio.com/) - IDE utilizada
+[`EXPO`](https://docs.expo.dev/router/introduction/) - roteador baseado em arquivo para React Native e aplicativos da web
 
-Use [`expo-router`](https://docs.expo.dev/router/introduction/) to build native navigation using files in the `app/` directory.
 
-## 🚀 How to use
-
-```sh
-npx create-expo-app -e with-router
-```
-
-## 📝 Notes
-
-- [Expo Router: Docs](https://docs.expo.dev/router/introduction/)
+ALTERAR BANCO DE DADOS

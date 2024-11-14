@@ -4,7 +4,7 @@
     "plugins": [
       "expo-router"
     ],
-    "name": "CRUDReactNative",
-    "slug": "CRUDReactNative"
+    "name": "saude-facil",
+    "slug": "saude-facil"
   }
 }
