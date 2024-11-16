@@ -1,31 +1,12 @@
-import React from "react";
-import { View, Text } from 'react-native';
+import React from 'react';
+import LoginScreen from './screens/LoginScreen';
+import { StyleSheet } from 'react-native';
+import globalStyles from './global.css';
+
+StyleSheet.create(globalStyles);
 
 export default function App() {
   return (
-    <View>
-      <Text>Saúde Fácil</Text>
-    </View>
+    <LoginScreen />
   );
 }
-
-// import { StatusBar } from 'expo-status-bar';
-// import { StyleSheet, Text, View } from 'react-native';
-
-// export default function App() {
-//   return (
-//     <View style={styles.container}>
-//       <Text>Saúde Fácil</Text>
-//       <StatusBar style="auto" />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
