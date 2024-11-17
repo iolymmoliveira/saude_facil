@@ -1,28 +1,27 @@
 {
   "expo": {
-    "name": "saude_facil",
-    "slug": "saude_facil",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "name": "saude-facil",
+    "slug": "saude-facil",
+    "platforms": ["ios", "android", "web"],
+    "sdkVersion": "52.0.0",
+    "plugins": [
+      "expo-sqlite"
+    ],
     "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.seuapp.saudeFacil",
+      "buildNumber": "1.0.0"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+      "package": "com.seuapp.saudeFacil",
+      "versionCode": 1,
+      "permissions": []
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "description": "Aplicativo para gestão de saúde e agendamentos",
+    "githubUrl": "https://github.com/seuusuario/saude-facil",
+    "scheme": "saudefacil"  // Adiciona um esquema único para deep linking
   }
 }

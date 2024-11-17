@@ -1,8 +1,7 @@
 {
-  "name": "saude_facil",
-  "license": "0BSD",
+  "name": "saude-facil",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -10,18 +9,34 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/native": "^7.0.3",
+    "@react-navigation/stack": "^7.0.3",
+    "@types/react": "~18.3.12",
+    "expo": "^52.0.7",
+    "expo-constants": "~17.0.3",
+    "expo-linking": "~7.0.2",
+    "expo-router": "~4.0.6",
+    "expo-splash-screen": "~0.29.11",
+    "expo-sqlite": "~15.0.3",
+    "expo-status-bar": "~2.0.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-native": "0.76.2",
+    "react-native-gesture-handler": "~2.20.2",
+    "react-native-reanimated": "^3.16.1",
+    "react-native-safe-area-context": "^4.12.0",
+    "react-native-screens": "~4.1.0",
+    "react-native-web": "~0.19.6",
+    "@react-native-community/datetimepicker": "^8.2.0",
+    "@react-native-firebase/app": "^21.5.0",
+    "@react-native-firebase/firestore": "^21.5.0",
     "@react-navigation/native": "^7.0.2",
     "@react-navigation/native-stack": "^7.0.2",
     "@react-navigation/stack": "^7.0.2",
-    "expo": "~52.0.7",
-    "expo-status-bar": "~2.0.0",
-    "react": "18.3.1",
+    "@types/react": "~18.3.12",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-skeleton-placeholder": "^3.0.1",
-    "typescript": "^5.3.3",
-    "@types/react": "~18.3.12"
-    "react-hook-form": "^7.53.2",
-    "react-native": "0.76.2"
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
