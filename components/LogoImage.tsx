@@ -1,7 +1,7 @@
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, ImageSourcePropType, StyleSheet } from 'react-native';
 
-const LogoImage = ({ source }) => {
+const LogoImage: React.FC<{ source: ImageSourcePropType }> = ({ source }) => {
   return <Image source={source} style={styles.image} />;
 }
 
