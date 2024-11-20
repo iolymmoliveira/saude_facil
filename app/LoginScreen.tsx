@@ -119,7 +119,8 @@ const LoginScreen = () => {
           />
         </View>
       </View>
-      <Footer icons={[]} />
+      <Footer icons={[
+      ]} />
     </View>
   );
 };
