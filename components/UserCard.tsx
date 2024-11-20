@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     width: '88%',
     alignSelf: 'center',
     position: 'absolute',
-    top: '8%',
+    top: '3%',
     zIndex: 1,
 
   },

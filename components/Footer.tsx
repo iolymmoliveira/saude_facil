@@ -18,6 +18,7 @@ const Footer: React.FC<FooterProps> = ({ icons }) => {
 const styles = StyleSheet.create({
   footer: {
     height: 60,
+    width: '100%',
     backgroundColor: '#031230',
     flexDirection: 'row',
     justifyContent: 'space-around',
