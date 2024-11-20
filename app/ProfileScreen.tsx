@@ -2,24 +2,24 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 
-export default function RegisterScreen({ navigation }) {
-  const [name, setName] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [susCard, setSusCard] = useState('');
-  const [phone, setPhone] = useState('');
+export default function ProfileScreen({ navigation }) {
+  const [name, setName] = useState('nome');
+  const [cpf, setCpf] = useState('cpf');
+  const [susCard, setSusCard] = useState('cartão sus');
+  const [phone, setPhone] = useState('fone');
 
-  const handleRegister = () => {
-    if (!name || !cpf || !susCard || !phone) {
-      Alert.alert('Erro', 'Por favor, preencha todos os campos!');
-      return;
-    }
-    Alert.alert('Sucesso', 'Usuário cadastrado com sucesso!');
+  const handleEdit = () => {
+    Alert.alert('Sucesso', 'Dados atualizados com sucesso!');
+  };
+
+  const handleDelete = () => {
+    Alert.alert('Confirmação', 'Perfil excluído com sucesso!');
     navigation.navigate('Login');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Cadastro</Text>
+      <Text style={styles.title}>Perfil</Text>
       <TextInput
         style={styles.input}
         placeholder="Nome Completo"
@@ -29,26 +29,24 @@ export default function RegisterScreen({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="CPF"
-        keyboardType="numeric"
         value={cpf}
-        onChangeText={setCpf}
+        editable={false}
       />
       <TextInput
         style={styles.input}
         placeholder="Cartão SUS"
-        keyboardType="numeric"
         value={susCard}
-        onChangeText={setSusCard}
+        editable={false}
       />
       <TextInput
         style={styles.input}
         placeholder="Telefone"
-        keyboardType="phone-pad"
         value={phone}
         onChangeText={setPhone}
       />
-      <Button title="Cadastrar" onPress={handleRegister} />
-      <Button title="Voltar" color="#00f" onPress={() => navigation.goBack()} />
+      <Button title="Salvar Alterações" onPress={handleEdit} />
+      <Button title="Excluir Perfil" color="red" onPress={handleDelete} />
+      <Button title="Sair" onPress={() => navigation.navigate('Login')} />
     </View>
   );
 }
