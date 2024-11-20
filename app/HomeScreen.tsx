@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import UserCard from '../components/UserCard';
 import Cards from '../components/Cards';
 import Footer from '../components/Footer';
@@ -30,42 +32,53 @@ const cardData = [
     title: 'Minha Saúde',
     subtitle: 'Seu Histórico de Saúde',
   },
-  
+
 ];
 
 const HomeScreen = () => {
-    const handleEditPress = () => {
-        Alert.alert('Editar', 'Você clicou no ícone de edição!');
-      };
+  const navigation = useNavigation();
 
-    return (
-        <View style={styles.container}>
-          <View style={styles.header}/>
-          <UserCard
-              userLogo= {require('../assets/icons/UserC.png')}
-              userName="Ana Maria" 
-              companyLogo= {require('../assets/images/logo_saude_facil.png')}
-              companyName="SAÚDE FÁCIL" 
-              onEditPress={handleEditPress}
+  const handleEditPress = () => {
+    navigation.navigate('RegisterScreen');
+  };
+
+  const handleClosePress = () => {
+    Alert.alert(
+      'Fechar Aplicativo',
+      'Esta funcionalidade ainda não está disponível. Por favor, minimize ou feche o aplicativo manualmente.',
+      [{ text: 'Entendido', onPress: () => {} }]
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header} />
+      <UserCard
+        userLogo={require('../assets/icons/UserC.png')}
+        userName="Ana Maria"
+        companyLogo={require('../assets/images/logo_saude_facil.png')}
+        companyName="SAÚDE FÁCIL"
+        onEditPress={handleEditPress}
+      />
+      <View style={styles.containerCards}>
+        {cardData.map((card, index) => (
+          <Cards
+            key={index}
+            {...card}
           />
-          <View style={styles.containerCards}>
-            {cardData.map((card, index) => (
-            <Cards
-              key={index}
-              {...card}
-            />
-            ))}
-          </View>
-          <Footer 
-            icons={[
-              require('../assets/icons/Home.png'),
-              require('../assets/icons/UserC.png'),
-              require('../assets/icons/Message.png'),
-              require('../assets/icons/Settings.png'),
-              require('../assets/icons/Close.png')
-            ]}
-          />
-        </View>
+        ))}
+      </View>
+      <Footer
+        icons={[
+          require('../assets/icons/HomeBlue.png'),
+          require('../assets/icons/UserC.png'),
+          require('../assets/icons/Message.png'),
+          require('../assets/icons/Settings.png'),
+          require('../assets/icons/Close.png')
+        ]}
+        onClosePress={handleClosePress}
+      />
+    </View>
 
   );
 };
@@ -77,7 +90,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
   },
-  header:{
+  header: {
     height: '20%',
     backgroundColor: '#031230',
     width: '100%',

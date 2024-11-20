@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontWeight: "bold",
     textAlign: "center",
+    fontFamily: 'MontserratRegular'
   },
 });
 

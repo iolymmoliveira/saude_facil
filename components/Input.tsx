@@ -13,8 +13,8 @@ interface InputProps {
 
 const Input: React.FC<InputProps> = ({ label, icon, value, onChangeText, keyboardType, placeholder }) => {
   return (
-    <View>
-      <Text>{label}</Text>
+    <View style={styles.containerInput}>
+      <Text style={styles.label}>{label}</Text>
       <TextInput 
         style={styles.input}
         value={value}
@@ -27,12 +27,21 @@ const Input: React.FC<InputProps> = ({ label, icon, value, onChangeText, keyboar
 };
 
 const styles = StyleSheet.create({
+  containerInput: {
+    paddingTop: 8,
+    paddingBottom: 8,
+    fontFamily: 'MontserratRegular',
+    fontSize: 14,
+  },
   input: {
     backgroundColor: '#FFFFFF',
     padding: 10,
     borderRadius: 8,
     height: 50,
     marginTop: 8
+  },
+  label: {
+    marginTop: 10,
   }
 });
 

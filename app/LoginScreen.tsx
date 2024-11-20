@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert, ScrollView } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+import * as SQLite from 'expo-sqlite';
+import { DatabaseTransaction } from 'expo-sqlite/src/SQLite';
+import { useNavigation } from '@react-navigation/native';
+import { validateCNS, validateCPF } from '../utils/validation';
+
 import Input from '../components/Input';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
-import { validateCNS } from '../utils/validation';
-import * as SQLite from 'expo-sqlite'; 
-import { DatabaseTransaction } from 'expo-sqlite/src/SQLite';
 
 const LoginScreen = () => {
+  const navigation = useNavigation();
+
+  const goToInitialScreen = () => {
+    navigation.navigate('InitialScreen');
+  };
+
   const {
     control,
     handleSubmit,
@@ -22,21 +30,22 @@ const LoginScreen = () => {
     };
   }
 
-  const validateLogin = async (data: { cns: string; }) => {
+  const validateLogin = async (data: { cns: string; cpf: string }) => {
     try {
-      const { cns } = data;
+      const { cns, cpf } = data;
 
       const db = await SQLite.openDatabaseAsync('banco.db');
 
       db.transaction((tx: DatabaseTransaction) => {
         tx.executeSql(
-          'SELECT * FROM pacientes WHERE cartaoSus = cns',
-          [cns],
+          'SELECT * FROM pacientes WHERE cartaoSus = ? AND cpf = ?',
+          [cns, cpf],
           (_, result: QueryResult) => {
             if (result.rows.length > 0) {
               Alert.alert('Sucesso', 'Login realizado com sucesso!');
+              navigation.navigate('HomeScreen');
             } else {
-              Alert.alert('Erro', 'CNS incorreto.');
+              Alert.alert('Erro', 'Campo CNS ou CPF incorreto.');
             }
           },
           (_, error) => {
@@ -51,23 +60,12 @@ const LoginScreen = () => {
     }
   };
 
+  const onSubmit = (data: { cns: string; cpf: string; }) => {
+    const isCNSValid = validateCNS(data.cns);
+    const isCPFValid = validateCPF(data.cpf);
 
-  // const onSubmit = (data: { cns: string; }) => {
-  //   const errors = validateCNS(data.cns);
-
-  //   if (errors ) {
-  //     Alert.alert('Erro', `${errors || ''}`);
-  //     return;
-  //   } 
-
-  //   validateLogin(data);
-  // };
-
-  const onSubmit = (data: { cns: string; }) => {
-    const isValid = validateCNS(data.cns);
-
-    if (!isValid) {
-      Alert.alert('Erro', 'CNS inválido.');
+    if (!isCNSValid || !isCPFValid) {
+      Alert.alert('Erro', 'CNS ou CPF inválido.');
       return;
     }
 
@@ -79,46 +77,71 @@ const LoginScreen = () => {
       <Header
         icon={require('../assets/icons/arrow_back.png')}
         logo={require('../assets/images/logo_saude_facil.png')}
-        title="Home Screen"
+        title="Entrar"
+        onBackPress={goToInitialScreen}
       />
-      <View style={styles.content}>
-        <Text style={styles.welcome}>Bem vindo(a)!</Text>
-        <Text style={styles.instructions}>Informe os dados abaixo:</Text>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View>
-          <Controller
-            control={control}
-            name="cns"
-            rules={{
-              validate: (value) => validateCNS(value),
-            }}
-            render={({ field: { onChange, value } }) => (
-              <Input
-                label="CNS - Número do Cartão Nacional de Saúde"
-                value={value}
-                onChangeText={onChange}
-                placeholder="Digite o número do CNS"
-                keyboardType="numeric"
-                type="numeric"
-              />
-            )}
-          />
-          {errors.cns && <Text style={styles.error}>{errors.cns.message}</Text>}
+          <Text style={styles.welcome}>Bem vindo(a)!</Text>
+          <Text style={styles.instructions}>Informe os dados abaixo:</Text>
+          <View>
+            <Controller
+              control={control}
+              name="cns"
+              rules={{
+                required: 'O CNS é obrigatório.',
+                validate: (value) =>
+                  validateCNS(value) || 'O CNS inserido é inválido.',
+              }}
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  label="CNS - Número do Cartão Nacional de Saúde"
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder="Digite o número do CNS"
+                  keyboardType="numeric"
+                  type="numeric"
+                />
+              )}
+            />
+            {errors.cns && <Text style={styles.error}>{errors.cns.message}</Text>}
+            <Controller
+              control={control}
+              name="cpf"
+              rules={{
+                required: 'O CPF é obrigatório.',
+                validate: (value) =>
+                  validateCPF(value) || 'O CPF inserido é inválido.',
+              }}
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  label="CPF - Número de Cadastro de Pessoa Física"
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder="Digite o número do CPF"
+                  keyboardType="numeric"
+                  type="numeric"
+                />
+              )}
+            />
+            {errors.cpf && <Text style={styles.error}>{errors.cpf.message}</Text>}
+          </View>
+          <View style={styles.containerButtons}>
+            <Button
+              text="Entrar"
+              onClick={handleSubmit(onSubmit)}
+              groundColor="#35816A"
+              textColor="white"
+            />
+            <Button
+              text="Criar Conta"
+              onClick={() => navigation.navigate('RegisterScreen')}
+              groundColor="#F1F1F1"
+              textColor="black"
+            />
+          </View>
         </View>
-        <View style={styles.containerButtons}>
-          <Button
-            text="Entrar"
-            onClick={handleSubmit(onSubmit)}
-            groundColor="#35816A"
-            textColor="white"
-          />
-          <Button
-            text="Criar Conta"
-            onClick={() => Alert.alert('Criar Conta')}
-            groundColor="#F1F1F1"
-            textColor="black"
-          />
-        </View>
-      </View>
+      </ScrollView>
       <Footer icons={[
       ]} />
     </View>
@@ -130,19 +153,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: '#F1F1F1',
     borderRadius: 16,
     margin: 16,
     padding: 18,
   },
   welcome: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: 'bold',
+    fontFamily: 'MontserratBold',
     marginBottom: 10,
   },
   instructions: {
     fontSize: 14,
+    fontFamily: 'MontserratSemiBold',
     marginBottom: 20,
   },
   containerButtons: {
@@ -152,8 +177,7 @@ const styles = StyleSheet.create({
   },
   error: {
     color: 'red',
-    fontSize: 12,
-    marginTop: 5,
+    fontSize: 14,
   },
 });
 
