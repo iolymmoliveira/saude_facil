@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import LogoImage from "../components/LogoImage";
 import Title from "../components/Title";
 
+
 export default function InitialScreen() {
     const [selectedButton, setSelectedButton] = useState<string | null>(null);
     return (
