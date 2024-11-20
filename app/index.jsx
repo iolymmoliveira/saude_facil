@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
 import * as SQLite from 'expo-sqlite'; 
 import criarTabelas from '../database/criarTabelas';
+import HomeScreen from '../screens/HomeScreen';
 
 const App = () => {
   const [nome, setNome] = useState('');
@@ -53,47 +54,48 @@ const App = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.form}>
-        <Text style={styles.title}>Bem Vindo(a)!</Text>
-        <Text>Para realizar o cadastro, informe os dados:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Nome"
-          onChangeText={(text) => setNome(text)}
-          value={nome}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Número do cartão SUS"
-          onChangeText={(text) => setCartaoSus(text)}
-          value={cartaoSus}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Telefone"
-          onChangeText={(text) => setTelefone(text)}
-          value={telefone}
-        />
-      </View>
-      <View style={styles.buttons}>
-        {/* Botão de cadastro */}
-        <Pressable style={styles.button} onPress={handle}>
-          <Text style={styles.buttonText}>Cadastrar</Text>
-        </Pressable>
+    // <View style={styles.container}>
+    //   <View style={styles.form}>
+    //     <Text style={styles.title}>Bem Vindo(a)!</Text>
+    //     <Text>Para realizar o cadastro, informe os dados:</Text>
+    //     <TextInput
+    //       style={styles.input}
+    //       placeholder="Nome"
+    //       onChangeText={(text) => setNome(text)}
+    //       value={nome}
+    //     />
+    //     <TextInput
+    //       style={styles.input}
+    //       placeholder="Número do cartão SUS"
+    //       onChangeText={(text) => setCartaoSus(text)}
+    //       value={cartaoSus}
+    //     />
+    //     <TextInput
+    //       style={styles.input}
+    //       placeholder="Email"
+    //       onChangeText={(text) => setEmail(text)}
+    //       value={email}
+    //     />
+    //     <TextInput
+    //       style={styles.input}
+    //       placeholder="Telefone"
+    //       onChangeText={(text) => setTelefone(text)}
+    //       value={telefone}
+    //     />
+    //   </View>
+    //   <View style={styles.buttons}>
+    //     {/* Botão de cadastro */}
+    //     <Pressable style={styles.button} onPress={handle}>
+    //       <Text style={styles.buttonText}>Cadastrar</Text>
+    //     </Pressable>
 
-        {/* Botão para navegar para a lista */}
-        <Pressable style={styles.button} onPress={() => router.push('/lista')}>
-          <Text style={styles.buttonText}>Ver lista</Text>
-        </Pressable>
-      </View>
-    </View>
+    //     {/* Botão para navegar para a lista */}
+    //     <Pressable style={styles.button} onPress={() => router.push('/lista')}>
+    //       <Text style={styles.buttonText}>Ver lista</Text>
+    //     </Pressable>
+    //   </View>
+    // </View>
+    <HomeScreen />
   );
 };
 
