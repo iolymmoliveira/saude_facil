@@ -1,17 +1,24 @@
 import React from 'react';
-import { View, Image, StyleSheet, ImageSourcePropType } from 'react-native';
+import { View, Image, StyleSheet, ImageSourcePropType, TouchableOpacity } from 'react-native';
 
 interface FooterProps {
-  icons: ImageSourcePropType[]; // Array of icon image sources
+  icons: ImageSourcePropType[];
+  onClosePress?: () => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ icons }) => {
+const Footer: React.FC<FooterProps> = ({ icons, onClosePress }) => {
   return (
     <View style={styles.footer}>
-      {icons.map((icon, index) => (
-        <Image key={index} source={icon} style={styles.icon} />
-      ))}
-    </View>
+    {icons.map((icon, index) => (
+      <TouchableOpacity key={index} onPress={() => {
+        if (index === icons.length - 1 && onClosePress) {
+          onClosePress();
+        }
+      }}>
+        <Image source={icon} style={styles.icon} />
+      </TouchableOpacity>
+    ))}
+  </View>
   );
 };
 

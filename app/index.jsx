@@ -3,6 +3,8 @@ import { View, StyleSheet, Animated } from "react-native";
 import LogoImage from "../components/LogoImage";
 import Title from "../components/Title";
 import { useNavigation } from "@react-navigation/native";
+import * as Font from 'expo-font';
+import { loadFonts } from '../utils/loadFonts';
 
 const SkeletonLoader = () => {
   const AnimatedValue = useRef(new Animated.Value(0)).current;
@@ -19,7 +21,7 @@ const SkeletonLoader = () => {
       });
     };
 
-    circleAnimated();  
+    circleAnimated();
   }, [AnimatedValue]);
 
   const loaderX = AnimatedValue.interpolate({
@@ -46,6 +48,14 @@ const SkeletonLoader = () => {
 
 export default function App() {
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const loadAppFonts = async () => {
+      await loadFonts();
+    };
+
+    loadAppFonts();
+  }, []);
 
   useEffect(() => {
     const timeOut = setTimeout(() => {
@@ -76,11 +86,10 @@ const styles = StyleSheet.create({
     height: 60,
   },
   loader: {
-    width: 60, 
-    height: 60, 
-    borderRadius: 30, 
-    backgroundColor: '#FFFFFF', 
-    overflow: 'hidden' 
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#FFFFFF',
+    overflow: 'hidden'
   }
 });
-

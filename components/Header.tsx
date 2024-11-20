@@ -1,17 +1,20 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, ImageSourcePropType } from 'react-native';
+import { View, Text, Image, StyleSheet, ImageSourcePropType, TouchableOpacity } from 'react-native';
 
 interface HeaderProps {
   icon: ImageSourcePropType;
   logo: ImageSourcePropType;
   title: string;
+  onBackPress?: () => void
 }
 
-const Header: React.FC<HeaderProps> = ({ icon, logo, title }) => {
+const Header: React.FC<HeaderProps> = ({ icon, logo, title, onBackPress }) => {
   return (
     <View style={styles.header}>
       <View style={styles.leftContainer}>
-        <Image source={icon} style={styles.icon} />
+        <TouchableOpacity onPress={onBackPress}>
+          <Image source={icon} style={styles.icon} />
+        </TouchableOpacity>
         <Text style={styles.title}>{title}</Text>
       </View>
         <Image source={logo} style={styles.logo} />

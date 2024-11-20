@@ -1,55 +1,51 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import LogoImage from "../components/LogoImage";
 import Title from "../components/Title";
-
+import { useNavigation } from "@react-navigation/native";
+import Button from "../components/Button";
 
 export default function InitialScreen() {
+    const navigation = useNavigation();
     const [selectedButton, setSelectedButton] = useState<string | null>(null);
-    return (
 
+    const handleButtonClick = (buttonName: string) => {
+    setSelectedButton(buttonName);
+    navigation.navigate({
+        name: buttonName === 'Entrar' ? 'LoginScreen' : 'RegisterScreen',
+    });
+    };
+
+    return (
         <View style={styles.container}>
             <View style={styles.content}>
-                <LogoImage source={require('../assets/images/logo_saude_facil.png')}
-            />
-            <Title text="SAÚDE FÁCIL" />
-            
-            <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                        style={[
-                            styles.button,
-                            selectedButton === 'entrar' && styles.selectedButton
-                        ]}
-                        onPress={() => setSelectedButton('entrar')}
-                    >
-                        <Text style={[
-                            styles.buttonText,
-                            selectedButton === 'entrar' && styles.selectedButtonText
-                        ]}>
-                            Entrar
-                        </Text>
-                    </TouchableOpacity>
-                
-                    <TouchableOpacity
-                        style={[
-                            styles.button,
-                            selectedButton === 'criarConta' && styles.selectedButton
-                        ]}
-                        onPress={() => setSelectedButton('criarConta')}
-                        >
-                        <Text style={[
-                            styles.buttonText,
-                            selectedButton === 'criarConta' && styles.selectedButtonText
-                        ]}>
-                            Criar Conta
-                        </Text>
-                    </TouchableOpacity>
+                <LogoImage source={require("../assets/images/logo_saude_facil.png")} />
+                <Title text="SAÚDE FÁCIL" />
+
+                <View style={styles.buttonContainer}>
+                    <Button
+                        text="Entrar"
+                        groundColor="#35816A"
+                        textColor="#FFFFFF"
+                        onClick={() => {
+                            handleButtonClick('Entrar');
+                        }}
+                    />
+
+                    <Button
+                        text="Criar Conta"
+                        groundColor="transparent"
+                        textColor="#FFFFFF"
+                        onClick={() => {
+                            handleButtonClick('RegisterScreen');
+                        }}
+                    />
                 </View>
             </View>
         </View>
     );
 }
-  
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#031230",
@@ -62,26 +58,5 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         marginTop: 20,
-    },
-    button: {
-        backgroundColor: "#FFF",
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        marginVertical: 10, 
-        width: 200, 
-        alignItems: "center",
-    },
-    selectedButton: {
-        backgroundColor: "#35816A",
-      },
-      buttonText: {
-          color: "#031230",
-          fontWeight: "bold",
-      },
-       
-    selectedButtonText: {
-        color: "#FFF",
-        fontWeight: "bold",
     },
 });
