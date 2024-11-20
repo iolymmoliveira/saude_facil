@@ -21,10 +21,10 @@ const SkeletonLoader = () => {
   );
 };
 
-export default function App() {
+export default function LoadingScreen() {
   return (
     <View style={styles.container}>
-      <LogoImage source={require('../images/logo_saude_facil.png')}
+      <LogoImage source={require('../assets/images/logo_saude_facil.png')}
       />
       <Title text="SAÚDE FÁCIL" />
       

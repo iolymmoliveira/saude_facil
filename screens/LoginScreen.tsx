@@ -10,9 +10,6 @@ import * as SQLite from 'expo-sqlite';
 import { DatabaseTransaction } from 'expo-sqlite/src/SQLite';
 
 const LoginScreen = () => {
-  const [birthDate, setBirthDate] = useState<Date | null>(null);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-
   const {
     control,
     handleSubmit,

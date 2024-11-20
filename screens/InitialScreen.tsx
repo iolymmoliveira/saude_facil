@@ -3,13 +3,13 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import LogoImage from "../components/LogoImage";
 import Title from "../components/Title";
 
-export default function App() {
+export default function InitialScreen() {
     const [selectedButton, setSelectedButton] = useState<string | null>(null);
     return (
 
         <View style={styles.container}>
             <View style={styles.content}>
-                <LogoImage source={require('../images/logo_saude_facil.png')}
+                <LogoImage source={require('../assets/images/logo_saude_facil.png')}
             />
             <Title text="SAÚDE FÁCIL" />
             
