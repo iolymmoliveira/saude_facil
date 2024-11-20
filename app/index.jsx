@@ -1,41 +1,62 @@
-
-import React, { useEffect } from "react";
-import { View, StyleSheet } from "react-native";
-import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import React, { useEffect, useRef } from "react";
+import { View, StyleSheet, Animated } from "react-native";
 import LogoImage from "../components/LogoImage";
 import Title from "../components/Title";
 import { useNavigation } from "@react-navigation/native";
 
-export default function App() {
+const SkeletonLoader = () => {
+  const AnimatedValue = useRef(new Animated.Value(0)).current;
 
-  const SkeletonLoader = () => {
-    return (
-      <View style={styles.loaderContainer}>
-        <SkeletonPlaceholder>
-          <SkeletonPlaceholder.Item flexDirection="row" alignItems="center">
-            <SkeletonPlaceholder.Item width={60} height={60} borderRadius={50} />
-            <SkeletonPlaceholder.Item marginLeft={20}>
-              <SkeletonPlaceholder.Item width={120} height={20} borderRadius={4} />
-              <SkeletonPlaceholder.Item marginTop={6} width={80} height={20} borderRadius={4} />
-            </SkeletonPlaceholder.Item>
-          </SkeletonPlaceholder.Item>
-        </SkeletonPlaceholder>
+  useEffect(() => {
+    const circleAnimated = () => {
+      AnimatedValue.setValue(0);
+      Animated.timing(AnimatedValue, {
+        toValue: 1,
+        duration: 2000,
+        useNativeDriver: true,
+      }).start(() => {
+        circleAnimated();
+      });
+    };
+
+    circleAnimated();  
+  }, [AnimatedValue]);
+
+  const loaderX = AnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 100]
+  });
+
+  return (
+    <View style={styles.loaderContainer}>
+      <View style={styles.loader}>
+        <Animated.View
+          style={{
+            width: '200%',
+            height: '100%',
+            opacity: 1,
+            backgroundColor: '#5A85D9',
+            transform: [{ translateX: loaderX }]
+          }}
+        />
       </View>
-    );
-  };
+    </View>
+  );
+};
 
+export default function App() {
   const navigation = useNavigation();
 
   useEffect(() => {
     const timeOut = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 5000);
+    }, 1500);
     return () => clearTimeout(timeOut);
-  }, []);
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <LogoImage source={require('../assets/images/logo_saude_facil.png')}/>
+      <LogoImage source={require('../assets/images/logo_saude_facil.png')} />
       <Title text="SAÚDE FÁCIL" />
       <SkeletonLoader />
     </View>
@@ -51,6 +72,15 @@ const styles = StyleSheet.create({
   },
   loaderContainer: {
     marginTop: 20,
+    width: 60,
+    height: 60,
   },
-
+  loader: {
+    width: 60, 
+    height: 60, 
+    borderRadius: 30, 
+    backgroundColor: '#FFFFFF', 
+    overflow: 'hidden' 
+  }
 });
+

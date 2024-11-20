@@ -18,7 +18,7 @@ const cardData = [
   {
     iconSource: require('../assets/images/logo_medicine.png'),
     title: 'Medicamentos',
-    subtitle: 'Solcite seus Medicamentos',
+    subtitle: 'Solicite seus Medicamentos',
   },
   {
     iconSource: require('../assets/images/logo_vacinacao.png'),
@@ -28,7 +28,7 @@ const cardData = [
   {
     iconSource: require('../assets/images/logo_healthcare.png'),
     title: 'Minha Saúde',
-    subtitle: 'Seus Histórico de Saúde',
+    subtitle: 'Seu Histórico de Saúde',
   },
   
 ];
