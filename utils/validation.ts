@@ -60,3 +60,18 @@ function validatesCheckDigits(cpf: string): boolean {
 
   return true;
 }
+
+export const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+export const validatePhone = (phone: string): boolean => {
+  const phoneRegex = /^\(\d{2}\)\s\d{4}-\d{4}$/;
+  return phoneRegex.test(phone);
+}
+
+export const validateName = (nome: string): boolean => {
+  const nomeRegex = /^[A-Za-záàâãéèêíìîóòôõúùûç\s]+$/;
+  return nomeRegex.test(nome) && nome.length >= 3 && nome.length < 100;
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Alert, ScrollView } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import * as SQLite from 'expo-sqlite';
@@ -129,7 +129,8 @@ const LoginScreen = () => {
           <View style={styles.containerButtons}>
             <Button
               text="Entrar"
-              onClick={handleSubmit(onSubmit)}
+              // onClick={handleSubmit(onSubmit)}
+              onClick={() => navigation.navigate('HomeScreen')}
               groundColor="#35816A"
               textColor="white"
             />
