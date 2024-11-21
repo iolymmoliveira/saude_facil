@@ -1,35 +1,78 @@
-import React from 'react';
-import { ImageSourcePropType} from 'react-native';
-
+import React, { useState, useEffect } from 'react';
+import { ImageSourcePropType } from 'react-native';
+import * as SQLite from 'expo-sqlite';
 import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface UserCardProps {
   userLogo: ImageSourcePropType;
-  userName: string;
   companyLogo: ImageSourcePropType;
-  companyName: string;
+  companyName: string,
   onEditPress: () => void;
 }
 
-const UserCard: React.FC<UserCardProps> = ({ userLogo, userName, companyLogo, companyName, onEditPress }) => {
+const UserCard: React.FC<UserCardProps> = ({ userLogo, companyLogo, companyName, onEditPress }) => {
+  // const [userId, setUserId] = useState('');
+  const [userData, setUserData] = useState({ userId: 123 }); // Replace 123 with your desired ID
+  const [userName, setUserName] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // const db = SQLite.openDatabaseSync('banco.db');
+        const db = await SQLite.openDatabaseSync('banco.db', {
+          useNewConnection: true
+        });
+
+        db.transaction(tx => {
+          tx.executeSql(
+            'SELECT id, nome, cartaoSus FROM pacientes',
+            [],
+            (_, { rows: { _array } }) => {
+              if (_array.length > 0) {
+                setUserName(_array[0].nome || '');
+                setCardNumber(_array[0].cartaoSus || '');
+                setUserId(_array[0].id);
+              } else {
+                console.log('Nenhum dado encontrado');
+              }
+            },
+            (_, error) => {
+              console.error('Erro ao buscar dados:', error);
+              return false;
+            }
+          );
+        });
+      } catch (error) {
+        console.error('Erro ao abrir o banco de dados:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <View style={styles.card}>
       <View style={styles.header}>
         <View style={styles.userInfo}>
-          <Image source={ userLogo } style={styles.userLogo} />
+          <Image source={userLogo} style={styles.userLogo} />
           <Text style={styles.userName}>{userName}</Text>
         </View>
         <View style={styles.companyInfo}>
-          <Image source={ companyLogo } style={styles.companyLogo} />
+          <Image source={companyLogo} style={styles.companyLogo} />
           <Text style={styles.companyName}>{companyName}</Text>
         </View>
       </View>
       <View style={styles.cardNumberContainer}>
         <Text style={styles.nomeCartao}>Nº do cartão:</Text>
-        <TextInput style={styles.cardNumberInput} placeholder="Insira o número do cartão" />
-        <TouchableOpacity onPress={onEditPress}>
-          <Icon name="edit" size={24} color="#000" style={styles.editIcon}/>
+        <TextInput
+          style={styles.cardNumberInput}
+          value={cardNumber}
+          editable={false}
+        />
+        <TouchableOpacity onPress={() => onEditPress(userId)}>
+          <Icon name="edit" size={24} color="#000" style={styles.editIcon} />
         </TouchableOpacity>
       </View>
     </View>
@@ -76,8 +119,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: "center",
-    marginLeft: 80, 
-    marginTop: -10, 
+    marginLeft: 80,
+    marginTop: -10,
   },
   companyLogo: {
     width: 90,
@@ -88,7 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#FFFFFF',
-    
+
   },
   cardNumberContainer: {
     flexDirection: 'row',

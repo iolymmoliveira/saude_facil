@@ -39,7 +39,7 @@ const HomeScreen = () => {
   const navigation = useNavigation();
 
   const handleEditPress = () => {
-    navigation.navigate('RegisterScreen');
+    navigation.navigate('EditRegisterScreen', { userId });
   };
 
   const handleClosePress = () => {
