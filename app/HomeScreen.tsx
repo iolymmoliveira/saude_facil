@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import UserCard from '../components/UserCard';
 import Cards from '../components/Cards';
 import Footer from '../components/Footer';
 
+// Dados fictícios para os cards, que podem ser passados ou atualizados conforme necessário
 const cardData = [
   {
     iconSource: require('../assets/images/logo_enfermagem.png'),
@@ -32,16 +33,21 @@ const cardData = [
     title: 'Minha Saúde',
     subtitle: 'Seu Histórico de Saúde',
   },
-
 ];
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  
+  // Pegando o usuário da rota
+  const { user } = route.params;  // O usuário é passado da tela de login para a HomeScreen
 
+  // Função para editar o cadastro do usuário
   const handleEditPress = () => {
-    navigation.navigate('EditRegisterScreen', { userId });
+    navigation.navigate('EditRegisterScreen', { userId: user.id });
   };
 
+  // Função para fechar o aplicativo (placeholder para futura funcionalidade)
   const handleClosePress = () => {
     Alert.alert(
       'Fechar Aplicativo',
@@ -52,34 +58,38 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+      {/* Header com a cor de fundo, você pode adicionar conteúdo aqui */}
       <View style={styles.header} />
+      
+      {/* Passando o nome do usuário, o cartão SUS, e outros dados para o UserCard */}
       <UserCard
         userLogo={require('../assets/icons/UserC.png')}
-        userName="Ana Maria"
         companyLogo={require('../assets/images/logo_saude_facil.png')}
         companyName="SAÚDE FÁCIL"
-        onEditPress={handleEditPress}
+        userName={user.name} // Passando o nome do usuário
+        cardNumber={user.cartaoSus}  // Passando o cartão Sus
+        onEditPress={handleEditPress}  // Função de edição do cadastro
       />
+      
+      {/* Cards de funcionalidade */}
       <View style={styles.containerCards}>
         {cardData.map((card, index) => (
-          <Cards
-            key={index}
-            {...card}
-          />
+          <Cards key={index} {...card} />
         ))}
       </View>
+      
+      {/* Footer com ícones de navegação */}
       <Footer
         icons={[
           require('../assets/icons/HomeBlue.png'),
           require('../assets/icons/UserC.png'),
           require('../assets/icons/Message.png'),
           require('../assets/icons/Settings.png'),
-          require('../assets/icons/Close.png')
+          require('../assets/icons/Close.png'),
         ]}
-        onClosePress={handleClosePress}
+        onClosePress={handleClosePress}  // Fechar o aplicativo
       />
     </View>
-
   );
 };
 
@@ -98,7 +108,7 @@ const styles = StyleSheet.create({
   containerCards: {
     flex: 1,
     width: '88%',
-    marginTop: 80,
+    marginTop: 80,  // Distância dos cards após o UserCard
   },
 });
 

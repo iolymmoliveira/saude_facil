@@ -1,76 +1,74 @@
 import React from 'react';
-import { View, Text, StyleSheet, Alert, ScrollView } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
+import { View, Text, StyleSheet, Alert, ScrollView, ActivityIndicator } from 'react-native';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import * as SQLite from 'expo-sqlite';
-import { DatabaseTransaction } from 'expo-sqlite/src/SQLite';
-import { useNavigation } from '@react-navigation/native';
-import { validateCNS, validateCPF } from '../utils/validation';
+import { getUserInfo } from '../database/GetUserInfo';  // Corrigido o caminho da importação
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 
 import Input from '../components/Input';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
 
-const LoginScreen = () => {
-  const navigation = useNavigation();
+// Tipando os dados do formulário
+interface FormData {
+  cns: string;
+  cpf: string;
+};
 
+// Definindo o tipo para as rotas
+type RootStackParamList = {
+  InitialScreen: undefined;
+  HomeScreen: { user: any };
+  RegisterScreen: undefined;
+};
+
+// Função para buscar usuário no banco de dados
+async function fetchUserInfo(cns: string, cpf: string) {
+  const userInfo = await getUserInfo(cns, cpf);
+  console.log('Info do usuário obtida:', userInfo);
+  return userInfo;
+}
+
+const LoginScreen = () => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  
+  // Função de navegação
   const goToInitialScreen = () => {
     navigation.navigate('InitialScreen');
   };
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  // Controle do formulário
+  const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const [isLoading, setIsLoading] = React.useState(false); // Estado para controle de carregamento
 
-  interface QueryResult {
-    rows: {
-      _array: any[];
-    };
-  }
+  // Função que será chamada ao enviar o formulário
+  // Em LoginScreen
 
-  const validateLogin = async (data: { cns: string; cpf: string }) => {
-    try {
-      const { cns, cpf } = data;
+const onSubmit: SubmitHandler<FormData> = async (data) => {
+  setIsLoading(true); // Começa o carregamento
+  try {
+    console.log('Iniciando validação...', data); // Para debug
 
-      const db = await SQLite.openDatabaseAsync('banco.db');
+    // Buscar o usuário no banco de dados
+    const user = await fetchUserInfo(data.cns, data.cpf);
 
-      db.transaction((tx: DatabaseTransaction) => {
-        tx.executeSql(
-          'SELECT * FROM pacientes WHERE cartaoSus = ? AND cpf = ?',
-          [cns, cpf],
-          (_, result: QueryResult) => {
-            if (result.rows.length > 0) {
-              Alert.alert('Sucesso', 'Login realizado com sucesso!');
-              navigation.navigate('HomeScreen');
-            } else {
-              Alert.alert('Erro', 'Campo CNS ou CPF incorreto.');
-            }
-          },
-          (_, error) => {
-            console.error('Erro ao validar login:', error);
-            Alert.alert('Erro', 'Ocorreu um erro ao validar os dados.');
-          }
-        );
-      });
-    } catch (error) {
-      console.error('Erro ao validar login:', error);
-      Alert.alert('Erro', 'Ocorreu um erro ao validar os dados.');
+    if (user) {
+      console.log('Usuário encontrado:', user); // Para debug
+      Alert.alert('Sucesso', 'Login realizado com sucesso!');
+      navigation.navigate('HomeScreen', { user }); // Passando o parâmetro 'user' para a HomeScreen
+    } else {
+      console.log('Nenhum usuário encontrado para os dados fornecidos.'); // Para debug
+      Alert.alert('Erro', 'CNS e CPF não coincidem.');
     }
-  };
-
-  const onSubmit = (data: { cns: string; cpf: string; }) => {
-    const isCNSValid = validateCNS(data.cns);
-    const isCPFValid = validateCPF(data.cpf);
-
-    if (!isCNSValid || !isCPFValid) {
-      Alert.alert('Erro', 'CNS ou CPF inválido.');
-      return;
-    }
-
-    validateLogin(data);
+  } catch (error) {
+    console.error('Erro ao tentar realizar o login:', error); // Para debug
+    Alert.alert('Erro', `Ocorreu um erro ao verificar o login: ${error.message}`);
+  } finally {
+    setIsLoading(false); // Finaliza o carregamento
   }
+};
+
 
   return (
     <View style={styles.container}>
@@ -90,8 +88,6 @@ const LoginScreen = () => {
               name="cns"
               rules={{
                 required: 'O CNS é obrigatório.',
-                validate: (value) =>
-                  validateCNS(value) || 'O CNS inserido é inválido.',
               }}
               render={({ field: { onChange, value } }) => (
                 <Input
@@ -110,8 +106,6 @@ const LoginScreen = () => {
               name="cpf"
               rules={{
                 required: 'O CPF é obrigatório.',
-                validate: (value) =>
-                  validateCPF(value) || 'O CPF inserido é inválido.',
               }}
               render={({ field: { onChange, value } }) => (
                 <Input
@@ -127,24 +121,28 @@ const LoginScreen = () => {
             {errors.cpf && <Text style={styles.error}>{errors.cpf.message}</Text>}
           </View>
           <View style={styles.containerButtons}>
-            <Button
-              text="Entrar"
-              // onClick={handleSubmit(onSubmit)}
-              onClick={() => navigation.navigate('HomeScreen')}
-              groundColor="#35816A"
-              textColor="white"
-            />
-            <Button
-              text="Criar Conta"
-              onClick={() => navigation.navigate('RegisterScreen')}
-              groundColor="#F1F1F1"
-              textColor="black"
-            />
+            {isLoading ? (
+              <ActivityIndicator size="large" color="#35816A" />
+            ) : (
+              <>
+                <Button
+                  text="Entrar"
+                  onClick={handleSubmit(onSubmit)}
+                  groundColor="#35816A"
+                  textColor="white"
+                />
+                <Button
+                  text="Criar Conta"
+                  onClick={() => navigation.navigate('RegisterScreen')}
+                  groundColor="#F1F1F1"
+                  textColor="black"
+                />
+              </>
+            )}
           </View>
         </View>
       </ScrollView>
-      <Footer icons={[
-      ]} />
+      <Footer icons={[]} />
     </View>
   );
 };

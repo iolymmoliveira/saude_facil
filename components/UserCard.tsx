@@ -1,56 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { ImageSourcePropType } from 'react-native';
-import * as SQLite from 'expo-sqlite';
 import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons'; 
+
+
 
 interface UserCardProps {
   userLogo: ImageSourcePropType;
   companyLogo: ImageSourcePropType;
-  companyName: string,
-  onEditPress: () => void;
+  companyName: string;
+  onEditPress: (userId: number) => void;
+  userName: string;  // Recebendo o nome do usuário
+  cardNumber: string;  // Recebendo o número do cartão SUS
+  userId: number;  // Recebendo o ID do usuário
 }
 
-const UserCard: React.FC<UserCardProps> = ({ userLogo, companyLogo, companyName, onEditPress }) => {
-  // const [userId, setUserId] = useState('');
-  const [userData, setUserData] = useState({ userId: 123 }); // Replace 123 with your desired ID
-  const [userName, setUserName] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const db = SQLite.openDatabaseSync('banco.db');
-        const db = await SQLite.openDatabaseSync('banco.db', {
-          useNewConnection: true
-        });
-
-        db.transaction(tx => {
-          tx.executeSql(
-            'SELECT id, nome, cartaoSus FROM pacientes',
-            [],
-            (_, { rows: { _array } }) => {
-              if (_array.length > 0) {
-                setUserName(_array[0].nome || '');
-                setCardNumber(_array[0].cartaoSus || '');
-                setUserId(_array[0].id);
-              } else {
-                console.log('Nenhum dado encontrado');
-              }
-            },
-            (_, error) => {
-              console.error('Erro ao buscar dados:', error);
-              return false;
-            }
-          );
-        });
-      } catch (error) {
-        console.error('Erro ao abrir o banco de dados:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+const UserCard: React.FC<UserCardProps> = ({ 
+  userLogo, 
+  companyLogo, 
+  companyName, 
+  onEditPress, 
+  userName, 
+  cardNumber, 
+  userId 
+}) => {
 
   return (
     <View style={styles.card}>
@@ -94,7 +67,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '3%',
     zIndex: 1,
-
   },
   header: {
     flexDirection: 'row',
@@ -131,7 +103,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#FFFFFF',
-
   },
   cardNumberContainer: {
     flexDirection: 'row',
@@ -150,8 +121,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: '#FFFFFF',
     marginRight: 10,
-
   },
 });
 
 export default UserCard;
+

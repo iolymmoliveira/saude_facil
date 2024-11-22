@@ -1,4 +1,4 @@
-export const validateCNS = (cns: string): string | null => {
+/*export const validateCNS = (cns: string): string | null => {
   if (!cns) {
     return 'O número do CNS é obrigatório.';
   }
@@ -74,4 +74,4 @@ export const validatePhone = (phone: string): boolean => {
 export const validateName = (nome: string): boolean => {
   const nomeRegex = /^[A-Za-záàâãéèêíìîóòôõúùûç\s]+$/;
   return nomeRegex.test(nome) && nome.length >= 3 && nome.length < 100;
-}
+}*/
