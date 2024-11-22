@@ -11,7 +11,7 @@ import Button from '../components/Button';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-const registerUser = async (data), navigation => {
+const registerUser = async (data, navigation) => {
   try {
     const { name, cns, cpf, password } = data;
     const db = await SQLite.openDatabaseAsync('banco.db');
