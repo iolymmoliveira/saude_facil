@@ -1,17 +1,16 @@
-// RegisterScreen.js
-
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Alert, StyleSheet, Text, View, ScrollView } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import * as SQLite from 'expo-sqlite';
-import { createTables } from '../database/CreateTables'; // Ajuste o caminho conforme necessário
+import { createTables } from '../database/CreateTables'; 
+
 import Input from '../components/Input';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-const registerUser = async (data) => {
+const registerUser = async (data, navigation) => {
   try {
     const { name, cns, cpf, password } = data;
     const db = await SQLite.openDatabaseAsync('banco.db');
@@ -26,7 +25,12 @@ const registerUser = async (data) => {
       
       // Verifica se a inserção foi bem-sucedida
       if (insertResult.changes > 0) {
-        Alert.alert('Sucesso', 'Usuário registrado com sucesso!');
+        Alert.alert('Sucesso', 'Usuário registrado com sucesso!', [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate('LoginScreen'), // Navega para LoginScreen após sucesso
+          },
+        ]);
       } else {
         Alert.alert('Erro', 'Ocorreu um erro ao registrar os dados.');
       }
@@ -38,7 +42,7 @@ const registerUser = async (data) => {
 };
 
 const RegisterScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); // Hook de navegação
 
   useEffect(() => {
     console.log('Chamando a função para criar as tabelas...');
@@ -46,13 +50,13 @@ const RegisterScreen = () => {
   }, []);
 
   const goToInitialScreen = () => {
-    navigation.navigate('InitialScreen');
+    navigation.navigate('InitialScreen'); // Navega para a tela inicial
   };
 
   const { control, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
-    registerUser(data);
+    registerUser(data, navigation);  // Passa a navegação para a função de registro
   };
 
   return (

@@ -7,18 +7,19 @@ interface ButtonProps {
   groundColor?: string;
   textColor?: string;
   onClick: () => void;
+  spacing?: number; // Nova propriedade para controlar o espaçamento
 }
 
-const Button: React.FC<ButtonProps> = ({ text, groundColor = '#35816A', textColor = '#FFFFFF', onClick }) => {
+const Button: React.FC<ButtonProps> = ({ text, groundColor = '#35816A', textColor = '#FFFFFF', onClick, spacing = 6 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <TouchableOpacity 
-      style={styles.container} 
+      style={[styles.container, { marginBottom: spacing }]} // Usando a propriedade spacing aqui
       onPress={onClick}
-      >
-      <View style={[styles.button, { backgroundColor: groundColor}]}>
-        <Text style={[styles.buttonText, { color: textColor}]}>{text}</Text>
+    >
+      <View style={[styles.button, { backgroundColor: groundColor }]}>
+        <Text style={[styles.buttonText, { color: textColor }]}>{text}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -29,7 +30,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 6,
   },
   button: {
     width: 200,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     fontWeight: '600',
-    fontFamily: 'MontserratBold'
+    fontFamily: 'MontserratBold',
   },
 });
 

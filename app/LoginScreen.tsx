@@ -32,6 +32,7 @@ async function fetchUserInfo(cns: string, cpf: string) {
 
 const LoginScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   
   // Função de navegação
   const goToInitialScreen = () => {
