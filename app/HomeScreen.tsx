@@ -41,12 +41,18 @@ const HomeScreen = () => {
 
   const handleClosePress = () => {
     Alert.alert(
-      'Fechar Aplicativo',
-      'Esta funcionalidade ainda não está disponível. Por favor, minimize ou feche o aplicativo manualmente.',
-      [{ text: 'Entendido', onPress: () => {} }]
+      'Deslogando',
+      'Você está sendo deslogado. Retornando à página de login.',
+      [
+        {
+          text: 'Ok',
+          onPress: () => {
+            navigation.navigate('LoginScreen'); // Redireciona para a tela de login
+          },
+        },
+      ]
     );
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.header} />

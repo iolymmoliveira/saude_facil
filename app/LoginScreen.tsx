@@ -60,7 +60,7 @@ const onSubmit: SubmitHandler<FormData> = async (data) => {
       navigation.navigate('HomeScreen', { user }); // Passando o parâmetro 'user' para a HomeScreen
     } else {
       console.log('Nenhum usuário encontrado para os dados fornecidos.'); // Para debug
-      Alert.alert('Erro', 'CNS e CPF não coincidem.');
+      Alert.alert('Erro', 'CNS e CPF não encontrados.');
     }
   } catch (error) {
     console.error('Erro ao tentar realizar o login:', error); // Para debug
